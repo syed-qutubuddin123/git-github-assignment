@@ -2,10 +2,24 @@ provider "aws" {
   region = var.aws_region
 }
 
-module "ec2" {
-  source        = "./modules/ec2"
-  ami_id        = "ami-06bdd2d56adcaadae"
+resource "aws_instance" "dev" {
+  ami           = var.ami_id
+  instance_type = var.dev_instance_type
   key_name      = var.key_name
-  server_config = var.server_one_two_three
+  subnet_id     = var.dev_subnet_id
+
+  tags = {
+    Name = var.dev_name
+  }
 }
 
+resource "aws_instance" "prod" {
+  ami           = var.ami_id
+  instance_type = var.prod_instance_type
+  key_name      = var.key_name
+  subnet_id     = var.prod_subnet_id
+
+  tags = {
+    Name = var.prod_name
+  }
+}
